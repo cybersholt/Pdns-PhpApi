@@ -1,5 +1,5 @@
 {
-    "name": "jeremib/pdns-php-api",
+    "name": "cybersholt/pdns-php-api",
     "description": "RESTful PHP API server for PowerDNS",
     "minimum-stability": "dev",
     "keywords": ["silex", "pdns", "powerdns"],
@@ -15,7 +15,9 @@
         "silex/silex": "1.2.*@dev",
         "symfony/security": "2.4.*@dev",
         "symfony/class-loader": "2.5.*@dev",
-        "igorw/config-service-provider": "1.2.*@dev"
+        "igorw/config-service-provider": "1.2.*@dev",
+        "ext-json": "*",
+        "ext-pdo": "*"
     },
     "autoload": {
         "psr-0": { "Jeremib\\InnerServe": "src" }

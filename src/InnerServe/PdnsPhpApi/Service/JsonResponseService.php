@@ -2,12 +2,29 @@
 
 namespace InnerServe\PdnsPhpApi\Service;
 
-class JsonResponseService {
-    public function ok($data) {
-        return json_encode(array('success' => true, 'error' => null, 'data' => $data));
-    }
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-    public function error($error, $data = null) {
-        return json_encode(array('success' => false, 'error' => $error, 'data' => $data));
-    }
+class JsonResponseService {
+	/**
+	 * @param $data
+	 *
+	 * @return JsonResponse
+	 */
+	public function ok( $data ) {
+		$response = new JsonResponse();
+
+		return $response->setData( array( 'success' => true, 'error' => null, 'data' => $data ) );
+	}
+
+	/**
+	 * @param      $error
+	 * @param null $data
+	 *
+	 * @return JsonResponse
+	 */
+	public function error( $error, $data = null ) {
+		$response = new JsonResponse();
+
+		return $response->setData( array( 'success' => false, 'error' => $error, 'data' => $data ) );
+	}
 }

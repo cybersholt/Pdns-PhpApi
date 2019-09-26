@@ -38,7 +38,7 @@ class RecordService extends Service
      */
     public function getByName($name)
     {
-        $stmt = $this->getPdo()->prepare("SELECT `name`, `type`, `content`, `ttl`, `prio` FROM records WHERE name = :name");
+        $stmt = $this->getPdo()->prepare("SELECT `id`,`name`, `type`, `content`, `ttl`, `prio` FROM records WHERE name = :name");
         $stmt->execute(array('name' => $name));
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -62,7 +62,7 @@ class RecordService extends Service
             throw new \Exception("Domain Not Found");
         }
 
-        $stmt = $this->getPdo()->prepare("SELECT `name`, `type`, `content`, `ttl`, `prio` FROM records WHERE domain_id = :domain_id AND type = :type");
+        $stmt = $this->getPdo()->prepare("SELECT `id`,`name`, `type`, `content`, `ttl`, `prio` FROM records WHERE domain_id = :domain_id AND type = :type");
         $stmt->execute(array('domain_id' => $domain_id, 'type' => $type));
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -73,7 +73,18 @@ class RecordService extends Service
         return $data;
     }
 
-    public function create($domain, $name, $type, $content, $ttl = 3600, $prio = null)
+	/**
+	 * @param      $domain
+	 * @param      $name
+	 * @param      $type
+	 * @param      $content
+	 * @param int  $ttl
+	 * @param null $prio
+	 *
+	 * @return array|bool
+	 * @throws \Exception
+	 */
+	public function create($domain, $name, $type, $content, $ttl = 3600, $prio = null)
     {
         if ( !($domain_id = $this->domain_service->getIdForDomain($domain) ) ) {
             throw new \Exception("Domain not found");
@@ -96,7 +107,12 @@ class RecordService extends Service
         return $this->get($this->getPdo()->lastInsertId());
     }
 
-    public function exists($id)
+	/**
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	public function exists($id)
     {
         $stmt = $this->getPdo()->prepare("SELECT COUNT(id) FROM records WHERE name = :id");
         $stmt->execute(array('domain' => $id));
@@ -105,7 +121,18 @@ class RecordService extends Service
         return ($data[0] > 0) ? true : false;
     }
 
-    public function update($id, $name, $type, $content, $ttl = 3600, $prio = null)
+	/**
+	 * @param      $id
+	 * @param      $name
+	 * @param      $type
+	 * @param      $content
+	 * @param int  $ttl
+	 * @param null $prio
+	 *
+	 * @return array|bool
+	 * @throws \Exception
+	 */
+	public function update($id, $name, $type, $content, $ttl = 3600, $prio = null)
     {
         if ( !$this->exists($id) ) {
             throw new \Exception("Record not found");
@@ -128,7 +155,13 @@ class RecordService extends Service
         return $this->get($id);
     }
 
-    public function delete($id)
+	/**
+	 * @param $id
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function delete($id)
     {
         if ( !$this->exists($id) ) {
             throw new \Exception("Record not found");
