@@ -65,7 +65,7 @@ $record->post( '/', function ( \Silex\Application $app, Request $request ) {
 } );
 
 /**
- * Update/Overwrite Domain
+ * Update/Overwrite Record
  */
 $record->put( '/{id}', function ( \Silex\Application $app, Request $request, $id ) {
 	$record_service = new Service( $app['pdo'] );
@@ -79,7 +79,7 @@ $record->put( '/{id}', function ( \Silex\Application $app, Request $request, $id
 } )->assert( 'id', '\d+' );
 
 /**
- * Return Domain Information
+ * Delete record
  */
 $record->delete( '/{id}', function ( $id ) use ( $app ) {
 	$record_service = new Service( $app['pdo'] );

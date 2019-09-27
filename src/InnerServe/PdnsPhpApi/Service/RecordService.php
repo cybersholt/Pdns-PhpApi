@@ -11,12 +11,13 @@ class RecordService extends Service
         $this->domain_service = new DomainService($pdo);
     }
 
-    /**
-     * Get record information by id
-     *
-     * @param $name
-     * @return bool|array
-     */
+	/**
+	 * Get record information by id
+	 *
+	 * @param $id
+	 *
+	 * @return bool|array
+	 */
     public function get($id)
     {
         $stmt = $this->getPdo()->prepare("SELECT `id`, `name`, `type`, `content`, `ttl`, `prio` FROM records WHERE id = :id");
@@ -114,8 +115,8 @@ class RecordService extends Service
 	 */
 	public function exists($id)
     {
-        $stmt = $this->getPdo()->prepare("SELECT COUNT(id) FROM records WHERE name = :id");
-        $stmt->execute(array('domain' => $id));
+        $stmt = $this->getPdo()->prepare("SELECT COUNT(id) FROM records WHERE id = :id");
+        $stmt->execute(array('id' => $id));
         $data = $stmt->fetch(\PDO::FETCH_NUM);
 
         return ($data[0] > 0) ? true : false;
@@ -168,7 +169,7 @@ class RecordService extends Service
         }
 
         $stmt = $this->getPdo()->prepare("DELETE FROM records WHERE id = :id");
-        $stmt->execute(array('id' => $id));
+	    $stmt->execute(array('id' => $id));
 
         return true;
     }
